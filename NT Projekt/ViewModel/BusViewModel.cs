@@ -27,7 +27,7 @@ namespace NT_Projekt.ViewModel {
             Console.Write("Energi type: ");
             string busEnergyType = Console.ReadLine();
 
-            Bus newBus = new Bus(busBrand, busModel, busLicensePlate, busEnergyUsage, busEnergyType);
+            Bus newBus = new Bus(busBrand, busModel, busLicensePlate, busEnergyType);
 
             repoManager.BusRepository.AddBus(newBus);
 
