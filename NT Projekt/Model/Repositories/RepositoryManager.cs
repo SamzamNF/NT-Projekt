@@ -15,14 +15,15 @@ namespace NT_Projekt.Model.Repositories {
         public IUserRepository UserRepository { get; }
         public IBusRepository BusRepository { get; }
         public IRouteRepository RouteRepository { get; }
-
+        public ITripRepository TripRepository { get; }
         /* 
          * Constructor initialisere RepositoryManager med instanser af user-, bus- og route-repositories
          */
-        public RepositoryManager(IUserRepository userRepository, IBusRepository busRepository, IRouteRepository routeRepository) {
+        public RepositoryManager(IUserRepository userRepository, IBusRepository busRepository, IRouteRepository routeRepository, ITripRepository tripRepository) {
             UserRepository = userRepository;
             BusRepository = busRepository;
             RouteRepository = routeRepository;
+            TripRepository = tripRepository;
         }
     }
 }

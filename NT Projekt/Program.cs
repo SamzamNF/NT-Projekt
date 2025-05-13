@@ -19,9 +19,10 @@ namespace NT_Projekt {
             IUserRepository userRepository = new FileUserRepository(Path.Combine(dataPath, "users.txt"));
             IBusRepository busRepository = new FileBusRepository(Path.Combine(dataPath, "buses.txt"));
             IRouteRepository routeRepository = new FileRouteRepository(Path.Combine(dataPath, "routes.txt"));
+            ITripRepository tripRepository = new FileTripRepository(Path.Combine(dataPath, "trips.txt"));
 
 
-            RepositoryManager repoManager = new RepositoryManager(userRepository, busRepository, routeRepository);
+            RepositoryManager repoManager = new RepositoryManager(userRepository, busRepository, routeRepository, tripRepository);
 
             Console.Title = "Nordjyllands Trafikselskab";
             StartMenu.StartingMenu(repoManager);

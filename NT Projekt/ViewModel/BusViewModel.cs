@@ -24,12 +24,10 @@ namespace NT_Projekt.ViewModel {
             string busModel = Console.ReadLine();
             Console.Write("Nummerplade: ");
             string busLicensePlate = Console.ReadLine();
-            Console.Write("Energiforbrug: ");
-            double busEnergyUsage = double.Parse(Console.ReadLine());
             Console.Write("Energi type: ");
             string busEnergyType = Console.ReadLine();
 
-            Bus newBus = new Bus(busBrand, busModel, busLicensePlate, busEnergyUsage, busEnergyType);
+            Bus newBus = new Bus(busBrand, busModel, busLicensePlate, busEnergyType);
 
             repoManager.BusRepository.AddBus(newBus);
 
@@ -63,7 +61,7 @@ namespace NT_Projekt.ViewModel {
             Console.WriteLine("<<< Alle Busser >>>");
             var buses = repoManager.BusRepository.GetAllBuses();
             foreach (var bus in buses) {
-                Console.WriteLine($"{bus.Brand} {bus.Model} {bus.LicensePlate} {bus.EnergyUsage} {bus.EnergyType}");
+                Console.WriteLine($"{bus.Brand} {bus.Model} {bus.LicensePlate} {bus.EnergyType}");
             }
             Console.Write("Tryk en tast for at vende tilbage til menuen...");
             Console.ReadKey();
