@@ -48,22 +48,30 @@ namespace NT_Projekt.Model
         //ToString() formatere objektets data til en string seperaret med semikolon til lagring
         public override string ToString()
         {
-            return $"{DateTime};{EnergyUsage};{Duration};{RouteID};{LicensePlate};{UserID};{TripID}";
+            return string.Join(";",
+                DateTime.ToString(System.Globalization.CultureInfo.InvariantCulture),
+                EnergyUsage.ToString(System.Globalization.CultureInfo.InvariantCulture),
+                Duration.ToString(),
+                RouteID,
+                LicensePlate,
+                UserID,
+                TripID
+            );
         }
 
         //FromString() rekonstruerer et Trip objekt fra en string genereret af ToString()
         public static Trip FromString(string line)
         {
             var parts = line.Split(';');
-            DateTime date = DateTime.Parse(parts[0]);
-            double energyUsage = double.Parse(parts[1]);
+            DateTime date = DateTime.Parse(parts[0], System.Globalization.CultureInfo.InvariantCulture);
+            double energyUsage = double.Parse(parts[1], System.Globalization.CultureInfo.InvariantCulture);
             TimeSpan duration = TimeSpan.Parse(parts[2]);
             string routeID = parts[3];
             string licensePlate = parts[4];
             string userID = parts[5];
             string tripID = parts[6];
-            
-            Trip trip = new Trip(date, energyUsage, duration, routeID, userID, licensePlate, tripID);
+
+            Trip trip = new Trip(date, energyUsage, duration, routeID, licensePlate, userID, tripID);
             return trip;
         }
     }
