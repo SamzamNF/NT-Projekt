@@ -47,7 +47,7 @@ namespace NT_Projekt_Test
                 "T900"
             );
 
-            // Brug InvariantCulture til at formatere forventet værdi korrekt
+            // Brug af InvariantCulture til at formatere forventet værdi korrekt
             string expected = string.Join(";",
                 trip.DateTime.ToString(),
                 trip.EnergyUsage.ToString(),
@@ -68,15 +68,15 @@ namespace NT_Projekt_Test
         [TestMethod]
         public void FromString_ParsesCorrectly()
         {
-            // Arrange – ISO-format bruges her (yyyy-MM-ddTHH:mm:ss og punktum som decimal)
-            string line = "2024-05-01T08:30:00;34.5;01:30:00;R300;XY12345;U789;T900";
+            // Arrange
+            string line = "01-05-2024 08:30:00;34.5;01:30:00;R300;XY12345;U789;T900";
 
             // Act
             Trip trip = Trip.FromString(line);
 
             // Assert
             Assert.AreEqual(new DateTime(2024, 5, 1, 8, 30, 0), trip.DateTime);       // Tjek dato
-            Assert.AreEqual(34.5, trip.EnergyUsage);                                  // Tjek energi
+            Assert.AreEqual(34.5, trip.EnergyUsage);                                  // Tjek energiforbrug
             Assert.AreEqual(TimeSpan.FromMinutes(90), trip.Duration);                 // Tjek varighed
             Assert.AreEqual("R300", trip.RouteID);                                    // Tjek rute
             Assert.AreEqual("XY12345", trip.LicensePlate);                            // Tjek nummerplade

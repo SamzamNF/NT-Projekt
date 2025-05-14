@@ -49,8 +49,8 @@ namespace NT_Projekt.Model
         public override string ToString()
         {
             return string.Join(";",
-                DateTime.ToString(System.Globalization.CultureInfo.InvariantCulture),
-                EnergyUsage.ToString(System.Globalization.CultureInfo.InvariantCulture),
+                DateTime.ToString("dd-MM-yyyy HH:mm:ss"),
+                EnergyUsage.ToString(),
                 Duration.ToString(),
                 RouteID,
                 LicensePlate,
@@ -58,12 +58,11 @@ namespace NT_Projekt.Model
                 TripID
             );
         }
-
         //FromString() rekonstruerer et Trip objekt fra en string genereret af ToString()
         public static Trip FromString(string line)
         {
             var parts = line.Split(';');
-            DateTime date = DateTime.Parse(parts[0], System.Globalization.CultureInfo.InvariantCulture);
+            DateTime date = DateTime.ParseExact(parts[0], "dd-MM-yyyy HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
             double energyUsage = double.Parse(parts[1], System.Globalization.CultureInfo.InvariantCulture);
             TimeSpan duration = TimeSpan.Parse(parts[2]);
             string routeID = parts[3];
@@ -71,8 +70,7 @@ namespace NT_Projekt.Model
             string userID = parts[5];
             string tripID = parts[6];
 
-            Trip trip = new Trip(date, energyUsage, duration, routeID, licensePlate, userID, tripID);
-            return trip;
+            return new Trip(date, energyUsage, duration, routeID, licensePlate, userID, tripID);
         }
     }
 }
