@@ -4,8 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NT_Projekt.Model {
-    public class Bus {
+namespace NT_Projekt.Model
+{
+    public class Bus
+    {
         //Private felter
         private string _brand;
         private string _model;
@@ -19,7 +21,8 @@ namespace NT_Projekt.Model {
         public string EnergyType { get { return _energyType; } set { _energyType = value; } }
 
         //Constructor der initialisere en Bus instans med givne parameter
-        public Bus(string brand, string model, string licensePlate, string energyType) {
+        public Bus(string brand, string model, string licensePlate, string energyType)
+        {
             this._brand = brand;
             this._model = model;
             this._licensePlate = licensePlate;
@@ -27,12 +30,14 @@ namespace NT_Projekt.Model {
         }
 
         //ToString() formatere objektets data til en string seperaret med semikolon til lagring
-        public override string ToString() {
+        public override string ToString()
+        {
             return $"{Brand};{Model};{LicensePlate};{EnergyType}";
         }
 
         //FromString() rekonstruerer et Bus objekt fra en string genereret af ToString()
-        public static Bus FromString(string line) {
+        public static Bus FromString(string line)
+        {
             var parts = line.Split(";");
             string brand = parts[0];
             string model = parts[1];

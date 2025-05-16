@@ -4,8 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NT_Projekt.Model {
-    public class Route {
+namespace NT_Projekt.Model
+{
+    public class Route
+    {
         //Private felter
         private string _startPoint;
         private string _endPoint;
@@ -23,7 +25,8 @@ namespace NT_Projekt.Model {
         public string RouteID { get { return _routeID; } set { _routeID = value; } }
 
         //Constructor der initialisere en Route instans med givne parameter
-        public Route(string startPoint, string endPoint, TimeSpan estimatedDuration, double estimatedEnergyUsage, double distance, string routeID) {
+        public Route(string startPoint, string endPoint, TimeSpan estimatedDuration, double estimatedEnergyUsage, double distance, string routeID)
+        {
             this._startPoint = startPoint;
             this._endPoint = endPoint;
             this._estimatedDuration = estimatedDuration;
@@ -33,12 +36,14 @@ namespace NT_Projekt.Model {
         }
 
         //ToString() formatere objektets data til en string seperaret med semikolon til lagring
-        public override string ToString() {
+        public override string ToString()
+        {
             return $"{StartPoint};{EndPoint};{EstimatedDuration:c};{EstimatedEnergyUsage};{Distance};{RouteID}";
         }
 
         //FromString() rekonstruerer et Route objekt fra en string genereret af ToString()
-        public static Route FromString(string line) {
+        public static Route FromString(string line)
+        {
             var parts = line.Split(';');
             string startPoint = parts[0];
             string endPoint = parts[1];
