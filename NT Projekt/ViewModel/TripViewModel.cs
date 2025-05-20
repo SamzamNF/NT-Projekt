@@ -109,7 +109,7 @@ namespace NT_Projekt.ViewModel
 
         public void ShowTripsByMostDelayed(RepositoryManager repoManager)
         {
-            // Mangler vi ikke at skulle indtaste forsinkelse?
+            // Jeg kan ikke få denne metode til at virke
         }
 
         public void ShowTripsByUserID(RepositoryManager repoManager)
@@ -117,7 +117,13 @@ namespace NT_Projekt.ViewModel
             Console.WriteLine("Indtast bruger ID: ");
             string userID = Console.ReadLine();
 
+            // Null check på repositoriet
             var trips = repoManager.TripRepository.GetAllTrips();
+            if (trips == null)
+            {
+                Console.WriteLine("Ingen ture blev fundet.");
+                return;
+            }
 
             Console.WriteLine($"Ture kørt af brugeren {userID}: ");
 
@@ -125,12 +131,14 @@ namespace NT_Projekt.ViewModel
 
             foreach (var trip in trips)
             {
-                if (trip.UserID == userID)
+                // Null check på hver tur
+                if (trip != null && trip.UserID == userID)
                 {
                     Console.WriteLine(trip);
                     userFound = true;
                 }
             }
+
             // Hvis brugeren ikke blev fundet, kommer der en fejlbesked
             if (!userFound)
             {
