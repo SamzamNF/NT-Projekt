@@ -133,7 +133,17 @@ namespace NT_Projekt.ViewModel
 
         public void ShowTripsByMostDelayed(RepositoryManager repoManager)
         {
-            // Jeg kan ikke få denne metode til at virke
+            Console.WriteLine("Ture sorteret efter mest forsinkede: ");
+
+            // Hent alle ture og ruter
+            var trips = repoManager.TripRepository.GetAllTrips();
+            var routes = repoManager.RouteRepository.GetAllRoutes();
+
+            // Delay
+
+            Console.Write("Tryk en tast for at vende tilbage til menuen...");
+            Console.ReadKey();
+            StartMenu.StartingMenu(repoManager);
         }
 
         public void ShowTripsByUserID(RepositoryManager repoManager)
