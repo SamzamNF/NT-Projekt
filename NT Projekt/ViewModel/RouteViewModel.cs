@@ -62,14 +62,53 @@ namespace NT_Projekt.ViewModel {
          * Den printer til konsol hver rute i listen med tilhørende ruteinformation
          */
         public static void ShowAllRoutes(RepositoryManager repoManager) {
-            Console.WriteLine("<<< Alle Ruter >>>");
+            Console.Clear();
+            Console.WriteLine("<<< Alle Ruter >>>\n");
             var routes = repoManager.RouteRepository.GetAllRoutes();
-            foreach (var route in routes) {
-                Console.WriteLine($"{route.StartPoint} {route.EndPoint} {route.EstimatedDuration} {route.EstimatedEnergyUsage} {route.Distance} {route.RouteID}");
+
+            if(routes.Count == 0)
+            {
+                Console.WriteLine("Ingen ruter blev fundet");
+                Console.Write("Tryk en tast for at vende tilbage til menuen...");
+                Console.ReadKey();
+                RouteView.RouteMenu(repoManager);
+                return;
             }
-            Console.Write("Tryk en tast for at vende tilbage til menuen...");
+            
+            bool first = true;
+            foreach (var route in routes) {
+                PrintRouteDetails(route, first);
+                first = false;
+            }
+            Console.Write("\nTryk en tast for at vende tilbage til menuen...");
             Console.ReadKey();
             RouteView.RouteMenu(repoManager);
+        }
+
+        public static void PrintRouteDetails(Route route, bool first = false)
+        {
+            string infoheader = string.Format("{0,-20} {1,-20} {2,-15} {3,-15} {4,-15} {5,-15}", "Startpunkt", "Slutpunkt", "Est. tid", "Est. Energi", "Distance", "Rute ID");
+            string line = new string('-', 105);
+
+            if (first)
+            {
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                Console.WriteLine(infoheader);
+                Console.ResetColor();
+                Console.WriteLine(line);
+            }
+
+            string routeDetails = string.Format("{0,-20} {1,-20} {2,-15} {3,-15} {4,-15} {5,-15}",
+                route.StartPoint,
+                route.EndPoint,
+                route.EstimatedDuration.ToString(@"hh\:mm\:ss"),
+                route.EstimatedEnergyUsage,
+                route.Distance,
+                route.RouteID);
+
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine(routeDetails);
+            Console.ResetColor();
         }
     }
 }

@@ -1,2 +1,2 @@
 Frederikshavn St.;Frederikshavn St.;00:35:00;51;45;FR3
-Aalborg St.;Aalborg St.;00:55:00;51;57;311
+Aalborg St.;Aalborg St.;00:55:00;59;57;311

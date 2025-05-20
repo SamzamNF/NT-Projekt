@@ -266,9 +266,9 @@ namespace NT_Projekt.ViewModel
 
         public void PrintTripDetails(Trip trip, Route route, bool first = false)
         {
-            string infoHeader = string.Format("{0,-13} {1,-10} {2,-17} {3,-10} {4,-10} {5,-10} {6,-10} {7,-10}",
-                "Nummerplade", "Bruger", "Dato & Tid", "Varighed", "Estimat", "Forsink.", "Energi", "Energiafv.");
-            string line = new string('-', 110);
+            string infoHeader = string.Format("{0,-13} {1,-10} {2,-22} {3,-10} {4,-10} {5,-10} {6,-10} {7,-15} {8,-10}",
+                "Nummerplade", "Bruger", "Dato & Tid", "Varighed", "Estimat", "Forsink.", "Energi", "Est. Energi" ,"Energiafv.");
+            string line = new string('-', 115);
 
             if (first)
             {
@@ -279,18 +279,24 @@ namespace NT_Projekt.ViewModel
             }
 
             TimeSpan delay = trip.Duration - route.EstimatedDuration;
-            double energyDeviation = trip.EnergyUsage - route.EstimatedEnergyUsage;
+            double energyVariation = trip.EnergyUsage - route.EstimatedEnergyUsage;
 
+            Console.ForegroundColor = ConsoleColor.White;
+            
             if (delay.TotalMinutes < 0)
             {
                 Console.ForegroundColor = ConsoleColor.Green;
             }
             else if (delay.TotalMinutes > 3)
             {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+            }
+            else if (delay.TotalMinutes > 6)
+            {
                 Console.ForegroundColor = ConsoleColor.Red;
             }
 
-            string tripDetails = string.Format("{0,-13} {1,-10} {2,-17} {3,-10} {4,-10} {5,-10} {6,-10:F2} {7,-10:F2}",
+            string tripDetails = string.Format("{0,-13} {1,-10} {2,-22} {3,-10} {4,-10} {5,-10} {6,-10:F2} {7,-15:F2} {8,-10:F2}",
                 trip.LicensePlate,
                 trip.UserID,
                 trip.DateTime.ToString("dd-MM-yyyy HH:mm"),
@@ -298,7 +304,8 @@ namespace NT_Projekt.ViewModel
                 route.EstimatedDuration.ToString(@"hh\:mm\:ss"),
                 delay.ToString(@"hh\:mm\:ss"),
                 trip.EnergyUsage,
-                energyDeviation);
+                route.EstimatedEnergyUsage,
+                energyVariation);
 
             Console.WriteLine(tripDetails);
 

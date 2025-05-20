@@ -58,14 +58,49 @@ namespace NT_Projekt.ViewModel {
          * Den printer til konsol hver bus i listen med tilhørende businformation
          */
         public static void ShowAllBuses(RepositoryManager repoManager) {
-            Console.WriteLine("<<< Alle Busser >>>");
+            Console.Clear();
+            
+            Console.WriteLine("<<< Alle Busser >>>\n");
             var buses = repoManager.BusRepository.GetAllBuses();
-            foreach (var bus in buses) {
-                Console.WriteLine($"{bus.Brand} {bus.Model} {bus.LicensePlate} {bus.EnergyType}");
+
+            if (buses.Count == 0)
+            {
+                Console.WriteLine("Ingen busser blev fundet");
+                Console.Write("\nTryk en tast for at vende tilbage til menuen...");
+                Console.ReadKey();
+                BusView.BusMenu(repoManager);
+                return;
             }
-            Console.Write("Tryk en tast for at vende tilbage til menuen...");
+            
+            bool isFirst = true;
+            foreach (var bus in buses) {
+                PrintBusDetails(bus, isFirst);
+                isFirst = false;
+
+            }
+            Console.Write("\nTryk en tast for at vende tilbage til menuen...");
             Console.ReadKey();
             BusView.BusMenu(repoManager);
+        }
+
+        public static void PrintBusDetails(Bus bus, bool first = false)
+        {
+            string infoHeader = string.Format("{0,-15} {1,-15} {2,-15} {3,-15}", "Brand", "Model", "Nummerplade", "Energitype");
+
+            string line = new string('-', 58);
+
+            if (first)
+            {
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                Console.WriteLine(infoHeader);
+                Console.ResetColor();
+                Console.WriteLine(line);               
+            }
+
+            Console.ForegroundColor = ConsoleColor.White;
+            string busDetails = string.Format("{0,-15} {1,-15} {2,-15} {3,-15}", bus.Brand, bus.Model, bus.LicensePlate, bus.EnergyType);
+            Console.WriteLine(busDetails);
+            Console.ResetColor();
         }
     }
 }
