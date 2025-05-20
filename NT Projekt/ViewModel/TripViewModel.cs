@@ -33,6 +33,10 @@ namespace NT_Projekt.ViewModel
             repoManager.TripRepository.AddTrip(newTrip);
 
             Console.WriteLine("Turen er tilføjet!");
+
+            Console.Write("Tryk en tast for at vende tilbage til menuen...");
+            Console.ReadKey();
+            StartMenu.StartingMenu(repoManager);
         }
 
         public void DeleteTrip(RepositoryManager repoManager)
@@ -41,6 +45,10 @@ namespace NT_Projekt.ViewModel
             string tripID = Console.ReadLine();
 
             repoManager.TripRepository.DeleteTrip(tripID);
+
+            Console.Write("Tryk en tast for at vende tilbage til menuen...");
+            Console.ReadKey();
+            StartMenu.StartingMenu(repoManager);
         }
 
         public void ShowAllTrips(RepositoryManager repoManager)
@@ -53,6 +61,10 @@ namespace NT_Projekt.ViewModel
             {
                 Console.WriteLine(trip);
             }
+
+            Console.Write("Tryk en tast for at vende tilbage til menuen...");
+            Console.ReadKey();
+            StartMenu.StartingMenu(repoManager);
         }
 
         public void ShowTripsByPeriod(RepositoryManager repoManager)
@@ -75,6 +87,10 @@ namespace NT_Projekt.ViewModel
                     Console.WriteLine(trip);
                 }
             }
+
+            Console.Write("Tryk en tast for at vende tilbage til menuen...");
+            Console.ReadKey();
+            StartMenu.StartingMenu(repoManager);
         }
 
         public void ShowTripsByLeastFuelEfficient(RepositoryManager repoManager)
@@ -90,6 +106,10 @@ namespace NT_Projekt.ViewModel
             {
                 Console.WriteLine(trip);
             }
+
+            Console.Write("Tryk en tast for at vende tilbage til menuen...");
+            Console.ReadKey();
+            StartMenu.StartingMenu(repoManager);
         }
 
         public void ShowTripsByMostFuelEfficient(RepositoryManager repoManager)
@@ -105,6 +125,10 @@ namespace NT_Projekt.ViewModel
             {
                 Console.WriteLine(trip);
             }
+
+            Console.Write("Tryk en tast for at vende tilbage til menuen...");
+            Console.ReadKey();
+            StartMenu.StartingMenu(repoManager);
         }
 
         public void ShowTripsByMostDelayed(RepositoryManager repoManager)
@@ -144,6 +168,10 @@ namespace NT_Projekt.ViewModel
             {
                 Console.WriteLine("Ingen ture fundet for den indtastede bruger.");
             }
+
+            Console.Write("Tryk en tast for at vende tilbage til menuen...");
+            Console.ReadKey();
+            StartMenu.StartingMenu(repoManager);
         }
 
         public void ShowTripsByRouteID(RepositoryManager repoManager)
@@ -170,6 +198,10 @@ namespace NT_Projekt.ViewModel
             {
                 Console.WriteLine("Ingen ture fundet for den indtastede rute.");
             }
+
+            Console.Write("Tryk en tast for at vende tilbage til menuen...");
+            Console.ReadKey();
+            StartMenu.StartingMenu(repoManager);
         }
     }
 }

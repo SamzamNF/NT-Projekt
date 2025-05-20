@@ -16,7 +16,7 @@ namespace NT_Projekt.Model.Repositories
         public FileTripRepository(string filepath)
         {
             _filepath = filepath;
-            if (File.Exists(_filepath))
+            if (!File.Exists(_filepath))
             {
                 File.Create(_filepath).Close();
             }
@@ -91,7 +91,7 @@ namespace NT_Projekt.Model.Repositories
             }
             catch (IOException ex)
             {
-                Console.WriteLine($"Fejl i hente alle trips: {ex.Message}");
+                Console.WriteLine($"Fejl i at hente alle trips: {ex.Message}");
                 return null;
             }
         }
