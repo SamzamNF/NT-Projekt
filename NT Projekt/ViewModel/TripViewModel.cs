@@ -53,16 +53,29 @@ namespace NT_Projekt.ViewModel
 
         public void ShowAllTrips(RepositoryManager repoManager)
         {
-            Console.WriteLine("Alle registrerede ture: ");
+            Console.Clear();
+
+            Console.WriteLine("Alle registrerede ture:\n\n");
 
             var trips = repoManager.TripRepository.GetAllTrips();
+            var routes = repoManager.RouteRepository.GetAllRoutes();
+
+            bool first = true;
 
             foreach (var trip in trips)
             {
-                Console.WriteLine(trip);
+                // Finder den tilhørende rute via trip's RouteID
+                // Det gør vi ved hver trip, at dens rute hentes, så værdierne kan sættes ind i tabellen til den passende trip
+                var route = routes.FirstOrDefault(r => r.RouteID == trip.RouteID);
+
+                if (route != null)
+                {
+                    PrintTripDetails(trip, route, first);
+                    first = false;
+                }
             }
 
-            Console.Write("Tryk en tast for at vende tilbage til menuen...");
+            Console.Write("\nTryk en tast for at vende tilbage til menuen...");
             Console.ReadKey();
             StartMenu.StartingMenu(repoManager);
         }
@@ -133,13 +146,28 @@ namespace NT_Projekt.ViewModel
 
         public void ShowTripsByMostDelayed(RepositoryManager repoManager)
         {
-            Console.WriteLine("Ture sorteret efter mest forsinkede: ");
+            Console.Clear();
+            Console.WriteLine("Ture sorteret efter mest forsinkede: \n\n");
 
             // Hent alle ture og ruter
             var trips = repoManager.TripRepository.GetAllTrips();
             var routes = repoManager.RouteRepository.GetAllRoutes();
 
-            // Delay
+            // Finder trips med any, hvor der matcher samme trip id som rute id, hvor at trip duration var størrere end estimated duration.
+            // Derefter sortere vi i rækkefølge fra højeste afvigelse og ned  ved at udregne afvigelsen direkte.
+            var delayedTrips = trips.Where(t => routes.Any(r => r.RouteID == t.RouteID && t.Duration > r.EstimatedDuration))
+                .OrderByDescending(t => t.Duration - routes.First(r => r.RouteID == t.RouteID).EstimatedDuration);
+
+            bool first = true;
+            foreach (var trip in delayedTrips)
+            {
+                // Finder den tilhørende rute via trip's RouteID
+                // Det gør vi ved hver trip, at dens rute hentes, så værdierne kan sættes ind i tabellen til den passende trip
+                var route = routes.First(r => r.RouteID == trip.RouteID);
+               
+                PrintTripDetails(trip, route, first);
+                first = false;
+            }
 
             Console.Write("Tryk en tast for at vende tilbage til menuen...");
             Console.ReadKey();
@@ -151,8 +179,11 @@ namespace NT_Projekt.ViewModel
             Console.WriteLine("Indtast bruger ID: ");
             string userID = Console.ReadLine();
 
-            // Null check på repositoriet
-            var trips = repoManager.TripRepository.GetAllTrips();
+            //Henter trips hvor det indtastede user ID søger efter trips med matchende User ID i databasen
+            //Henter så alle ruter
+            var trips = repoManager.TripRepository.GetAllTrips().Where(t => t.UserID == userID);
+            var routes = repoManager.RouteRepository.GetAllRoutes();
+
             if (trips == null)
             {
                 Console.WriteLine("Ingen ture blev fundet.");
@@ -162,14 +193,21 @@ namespace NT_Projekt.ViewModel
             Console.WriteLine($"Ture kørt af brugeren {userID}: ");
 
             bool userFound = false;
+            bool first = true;
 
             foreach (var trip in trips)
             {
-                // Null check på hver tur
-                if (trip != null && trip.UserID == userID)
+                // Finder den tilhørende rute via trip's RouteID
+                // Det gør vi ved hver trip, at dens rute hentes, så værdierne kan sættes ind i tabellen til den passende trip
+                var route = routes.FirstOrDefault(r => r.RouteID == trip.RouteID);
+                
+                if (route == null) continue;
+
+                if (trip.UserID == userID)
                 {
-                    Console.WriteLine(trip);
+                    PrintTripDetails(trip, route, first);
                     userFound = true;
+                    first = false;
                 }
             }
 
@@ -186,25 +224,37 @@ namespace NT_Projekt.ViewModel
 
         public void ShowTripsByRouteID(RepositoryManager repoManager)
         {
+            Console.Clear();
+
             Console.WriteLine("Indtast rute ID: ");
             string routeID = Console.ReadLine();
 
-            var trips = repoManager.TripRepository.GetAllTrips();
+            //Henter ruten baseret på det indtastede rutenummer
+            //Henter så alle trips der passer under det ruteID.
+            Route route = repoManager.RouteRepository.GetRoute(routeID);
+            var trips = repoManager.TripRepository.GetAllTrips().Where(t => t.RouteID == routeID);
 
-            Console.WriteLine($"Ture på følgende rute: {routeID}");
-
-            bool routeFound = false;
-
-            foreach (var trip in trips)
+            if (trips.Any())
             {
-                if (trip.RouteID == routeID)
+                Console.WriteLine($"Ture på følgende rute: {routeID}");
+
+                bool routeFound = false;
+                bool first = true;
+
+                foreach (var trip in trips)
                 {
-                    Console.WriteLine(trip);
-                    routeFound = true;
+                    if (route != null)
+                    {
+                        PrintTripDetails(trip, route, first);
+                        routeFound = true;
+                        first = false;
+                    }
                 }
+
             }
+            
             // Hvis ruten ikke blev fundet, kommer der en fejlbesked
-            if (!routeFound)
+            if (!trips.Any())
             {
                 Console.WriteLine("Ingen ture fundet for den indtastede rute.");
             }
@@ -212,6 +262,47 @@ namespace NT_Projekt.ViewModel
             Console.Write("Tryk en tast for at vende tilbage til menuen...");
             Console.ReadKey();
             StartMenu.StartingMenu(repoManager);
+        }
+
+        public void PrintTripDetails(Trip trip, Route route, bool first = false)
+        {
+            string infoHeader = string.Format("{0,-13} {1,-10} {2,-17} {3,-10} {4,-10} {5,-10} {6,-10} {7,-10}",
+                "Nummerplade", "Bruger", "Dato & Tid", "Varighed", "Estimat", "Forsink.", "Energi", "Energiafv.");
+            string line = new string('-', 110);
+
+            if (first)
+            {
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                Console.WriteLine(infoHeader);
+                Console.ResetColor();
+                Console.WriteLine(line);
+            }
+
+            TimeSpan delay = trip.Duration - route.EstimatedDuration;
+            double energyDeviation = trip.EnergyUsage - route.EstimatedEnergyUsage;
+
+            if (delay.TotalMinutes < 0)
+            {
+                Console.ForegroundColor = ConsoleColor.Green;
+            }
+            else if (delay.TotalMinutes > 3)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+            }
+
+            string tripDetails = string.Format("{0,-13} {1,-10} {2,-17} {3,-10} {4,-10} {5,-10} {6,-10:F2} {7,-10:F2}",
+                trip.LicensePlate,
+                trip.UserID,
+                trip.DateTime.ToString("dd-MM-yyyy HH:mm"),
+                trip.Duration.ToString(@"hh\:mm\:ss"),
+                route.EstimatedDuration.ToString(@"hh\:mm\:ss"),
+                delay.ToString(@"hh\:mm\:ss"),
+                trip.EnergyUsage,
+                energyDeviation);
+
+            Console.WriteLine(tripDetails);
+
+            Console.ResetColor();
         }
     }
 }

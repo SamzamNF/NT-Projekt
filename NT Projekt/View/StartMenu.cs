@@ -20,7 +20,7 @@ namespace NT_Projekt.View {
 
             switch (selectedIndex) {
                 case 0:
-                    AddTripView.AddTrip(repoManager);
+                    TripView.AddTrip(repoManager);
                     break;
                 case 1:
                     ShowTripView.ShowTrips(repoManager);

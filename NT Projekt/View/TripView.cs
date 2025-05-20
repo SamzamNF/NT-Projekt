@@ -8,7 +8,7 @@ using NT_Projekt.ViewModel;
 
 namespace NT_Projekt.View
 {
-    public class AddTripView
+    public class TripView
     {
         /* 
          * Menu til at håndtere handlinger for bus information. Kalder metoder afhængig af hvad brugeren vil
