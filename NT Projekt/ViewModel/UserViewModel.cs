@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using NT_Projekt.Model.Repositories;
 using NT_Projekt.Model;
 using NT_Projekt.View;
+using System.Data;
 
 namespace NT_Projekt.ViewModel {
     public class UserViewModel {
@@ -56,14 +57,72 @@ namespace NT_Projekt.ViewModel {
          * Den printer til konsol hver user i listen, med deres tilhørende navn, efternavn og ID
          */
         public static void ShowAllUsers(RepositoryManager repoManager) {
+            Console.Clear();
             Console.WriteLine("<<< Alle Brugere >>>");
             var users = repoManager.UserRepository.GetAllUsers();
-            foreach (var user in users) {
-                Console.WriteLine($"{user.FirstName} {user.LastName} {user.UserID}");
+            
+            if (users.Count <= 0)
+            {
+                Console.WriteLine("Ingen brugere fundet i systemet");
+                Console.Write("Tryk en tast for at vende tilbage til menuen...");
+                Console.ReadKey();
+                UserView.UserMenu(repoManager);
+                return;
             }
-            Console.Write("Tryk en tast for at vende tilbage til menuen...");
+
+            bool first = true;
+            foreach (var user in users) {
+                PrintUserDetails(user, first);
+                first = false;
+            }
+            Console.Write("\nTryk en tast for at vende tilbage til menuen...");
             Console.ReadKey();
             UserView.UserMenu(repoManager);
+        }
+
+        public static void PrintUserDetails(User user, bool first = false)
+        {
+            string infoheader = string.Format("{0,-13} {1,-13} {2,-13}", "Fornavn", "Efternavn", "Bruger ID");
+            string line = new string('-', 42);
+
+            if (first)
+            {
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                Console.WriteLine(infoheader);
+                Console.ResetColor();
+                Console.WriteLine(line);
+            }
+
+            string routeDetails = string.Format("{0,-13} {1,-13} {2,-13}",
+            user.FirstName,
+            user.LastName,
+            user.UserID);
+
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine(routeDetails);
+            Console.ResetColor();
+        }
+
+        public static void UserList(RepositoryManager repoManager)
+        {
+            Console.WriteLine("<<< Alle Brugere >>>");
+            var users = repoManager.UserRepository.GetAllUsers();
+
+            if (users.Count <= 0)
+            {
+                Console.WriteLine("\nIngen brugere fundet i systemet - Opret en bruger inden du fortsætter");
+                Console.Write("Tryk en tast for at vende tilbage til menuen...");
+                Console.ReadKey();
+                UserView.UserMenu(repoManager);
+                return;
+            }
+
+            bool first = true;
+            foreach (var user in users)
+            {
+                PrintUserDetails(user, first);
+                first = false;
+            }
         }
     }
 }

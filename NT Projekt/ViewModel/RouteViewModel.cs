@@ -110,5 +110,28 @@ namespace NT_Projekt.ViewModel {
             Console.WriteLine(routeDetails);
             Console.ResetColor();
         }
+        public static void RouteList(RepositoryManager repoManager)
+        {
+            Console.WriteLine("<<< Alle Ruter >>>\n");
+            var routes = repoManager.RouteRepository.GetAllRoutes();
+
+            if (routes.Count == 0)
+            {
+                Console.WriteLine("\nIngen ruter blev fundet - Opret en rute inden du fortsætter");
+                Console.Write("Tryk en tast for at vende tilbage til menuen...");
+                Console.ReadKey();
+                RouteView.RouteMenu(repoManager);
+                return;
+            }
+
+            bool first = true;
+            foreach (var route in routes)
+            {
+                PrintRouteDetails(route, first);
+                first = false;
+            }
+
+
+        }
     }
 }

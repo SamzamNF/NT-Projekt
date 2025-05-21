@@ -102,5 +102,27 @@ namespace NT_Projekt.ViewModel {
             Console.WriteLine(busDetails);
             Console.ResetColor();
         }
+
+        public static void BusList(RepositoryManager repoManager)
+        {
+            Console.WriteLine("<<< Alle Busser >>>\n");
+            var buses = repoManager.BusRepository.GetAllBuses();
+
+            if (buses.Count == 0)
+            {
+                Console.WriteLine("\nIngen busser blev fundet - Opret en bus inden du fortsætter");
+                Console.Write("Tryk en tast for at vende tilbage til menuen...");
+                Console.ReadKey();
+                BusView.BusMenu(repoManager);
+                return;
+            }
+
+            bool isFirst = true;
+            foreach (var bus in buses)
+            {
+                PrintBusDetails(bus, isFirst);
+                isFirst = false;
+            }
+        }
     }
 }

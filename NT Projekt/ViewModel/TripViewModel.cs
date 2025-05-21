@@ -10,31 +10,46 @@ namespace NT_Projekt.ViewModel
         {
             Console.WriteLine("Tilføj ny tur");
 
-            Console.Write("Indtast dato og tid (fx 13-05-2025 14:30): ");
-            DateTime dateTime = Convert.ToDateTime(Console.ReadLine());
-            
-            Console.Write("Indtast energiforbrug (fx 22.5): ");
-            double energyUsage = Convert.ToDouble(Console.ReadLine());
-            
-            Console.Write("Indtast varighed i minutter (fx 45): ");
-            TimeSpan duration = TimeSpan.FromMinutes(Convert.ToDouble(Console.ReadLine()));
+            try
+            {
+                Console.Write("Indtast dato og tid (fx 13-05-2025 14:30): ");
+                DateTime dateTime = Convert.ToDateTime(Console.ReadLine());
 
-            Console.Write("Indtast rute-ID: ");
-            string routeID = Console.ReadLine();
+                Console.Write("Indtast energiforbrug (fx 22.5): ");
+                double energyUsage = Convert.ToDouble(Console.ReadLine());
 
-            Console.Write("Indtast busnummer (nummerplade): ");
-            string licensePlate = Console.ReadLine();
+                Console.Write("Indtast varighed i minutter (fx 45): ");
+                TimeSpan duration = TimeSpan.FromMinutes(Convert.ToDouble(Console.ReadLine()));
 
-            Console.WriteLine("Indtast bruger-ID: ");
-            string userID = Console.ReadLine();
+                Console.Clear();
+                RouteViewModel.RouteList(repoManager);
+                Console.Write("\nIndtast rute-ID: ");
+                string routeID = Console.ReadLine();
 
-            Trip newTrip = new Trip(dateTime, energyUsage, duration, routeID, licensePlate, userID, null);
+                Console.Clear();
+                BusViewModel.BusList(repoManager);
+                Console.Write("\nIndtast busnummer (nummerplade): ");
+                string licensePlate = Console.ReadLine();
 
-            repoManager.TripRepository.AddTrip(newTrip);
+                Console.Clear();
+                UserViewModel.UserList(repoManager);
+                Console.WriteLine("\nIndtast bruger-ID: ");
+                string userID = Console.ReadLine();
 
-            Console.WriteLine("Turen er tilføjet!");
+                Trip newTrip = new Trip(dateTime, energyUsage, duration, routeID, licensePlate, userID, null);
 
-            Console.Write("Tryk en tast for at vende tilbage til menuen...");
+                repoManager.TripRepository.AddTrip(newTrip);
+
+                Console.WriteLine("Turen er tilføjet!");
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("\nFejl i indtastning af data");
+            }
+           
+
+            Console.Write("\nTryk en tast for at vende tilbage til menuen...");
             Console.ReadKey();
             StartMenu.StartingMenu(repoManager);
         }
@@ -55,7 +70,7 @@ namespace NT_Projekt.ViewModel
         {
             Console.Clear();
 
-            Console.WriteLine("Alle registrerede ture:\n\n");
+            Console.WriteLine("Alle registrerede ture:\n");
 
             var trips = repoManager.TripRepository.GetAllTrips();
             var routes = repoManager.RouteRepository.GetAllRoutes();
@@ -147,7 +162,7 @@ namespace NT_Projekt.ViewModel
         public void ShowTripsByMostDelayed(RepositoryManager repoManager)
         {
             Console.Clear();
-            Console.WriteLine("Ture sorteret efter mest forsinkede: \n\n");
+            Console.WriteLine("Ture sorteret efter mest forsinkede: \n");
 
             // Hent alle ture og ruter
             var trips = repoManager.TripRepository.GetAllTrips();
@@ -176,48 +191,53 @@ namespace NT_Projekt.ViewModel
 
         public void ShowTripsByUserID(RepositoryManager repoManager)
         {
-            Console.WriteLine("Indtast bruger ID: ");
+            Console.Clear();
+
+            UserViewModel.UserList(repoManager);
+            Console.Write("\nIndtast bruger ID: ");
             string userID = Console.ReadLine();
+            Console.Clear();
 
             //Henter trips hvor det indtastede user ID søger efter trips med matchende User ID i databasen
             //Henter så alle ruter
             var trips = repoManager.TripRepository.GetAllTrips().Where(t => t.UserID == userID);
             var routes = repoManager.RouteRepository.GetAllRoutes();
 
-            if (trips == null)
+            if (!trips.Any())
             {
-                Console.WriteLine("Ingen ture blev fundet.");
+                Console.WriteLine("Ingen ture blev fundet for den indtastede bruger.");
+                Console.Write("\nTryk en tast for at vende tilbage til menuen...");
+                Console.ReadKey();
+                StartMenu.StartingMenu(repoManager);
                 return;
             }
 
-            Console.WriteLine($"Ture kørt af brugeren {userID}: ");
-
-            bool userFound = false;
-            bool first = true;
-
-            foreach (var trip in trips)
+            else
             {
-                // Finder den tilhørende rute via trip's RouteID
-                // Det gør vi ved hver trip, at dens rute hentes, så værdierne kan sættes ind i tabellen til den passende trip
-                var route = routes.FirstOrDefault(r => r.RouteID == trip.RouteID);
-                
-                if (route == null) continue;
+                Console.WriteLine($"\nTure kørt af brugeren {userID}:\n");
 
-                if (trip.UserID == userID)
+                bool first = true;
+
+                foreach (var trip in trips)
                 {
-                    PrintTripDetails(trip, route, first);
-                    userFound = true;
-                    first = false;
+                    // Finder den tilhørende rute via trip's RouteID
+                    // Det gør vi ved hver trip, at dens rute hentes, så værdierne kan sættes ind i tabellen til den passende trip
+                    var route = routes.FirstOrDefault(r => r.RouteID == trip.RouteID);
+
+                    // Program crashede hele tiden uden denne, skal nok fjernes og laves ordenligt?
+                    if (route == null) continue;
+
+                    if (trip.UserID == userID)
+                    {
+                        PrintTripDetails(trip, route, first);
+                        first = false;
+                    }
                 }
             }
+            
 
-            // Hvis brugeren ikke blev fundet, kommer der en fejlbesked
-            if (!userFound)
-            {
-                Console.WriteLine("Ingen ture fundet for den indtastede bruger.");
-            }
 
-            Console.Write("Tryk en tast for at vende tilbage til menuen...");
+            Console.Write("\nTryk en tast for at vende tilbage til menuen...");
             Console.ReadKey();
             StartMenu.StartingMenu(repoManager);
         }
@@ -226,7 +246,8 @@ namespace NT_Projekt.ViewModel
         {
             Console.Clear();
 
-            Console.WriteLine("Indtast rute ID: ");
+            RouteViewModel.RouteList(repoManager);
+            Console.Write("\nIndtast rute ID: ");
             string routeID = Console.ReadLine();
 
             //Henter ruten baseret på det indtastede rutenummer
@@ -234,9 +255,12 @@ namespace NT_Projekt.ViewModel
             Route route = repoManager.RouteRepository.GetRoute(routeID);
             var trips = repoManager.TripRepository.GetAllTrips().Where(t => t.RouteID == routeID);
 
+
+            Console.Clear();
             if (trips.Any())
             {
-                Console.WriteLine($"Ture på følgende rute: {routeID}");
+                Console.Clear();
+                Console.WriteLine($"\nTure på følgende rute: {routeID}\n");
 
                 bool routeFound = false;
                 bool first = true;
@@ -259,7 +283,7 @@ namespace NT_Projekt.ViewModel
                 Console.WriteLine("Ingen ture fundet for den indtastede rute.");
             }
 
-            Console.Write("Tryk en tast for at vende tilbage til menuen...");
+            Console.Write("\nTryk en tast for at vende tilbage til menuen...");
             Console.ReadKey();
             StartMenu.StartingMenu(repoManager);
         }
@@ -272,6 +296,19 @@ namespace NT_Projekt.ViewModel
 
             if (first)
             {
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write("■");
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine(" Hvis bus ankommer før tid");
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.Write("■");
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine(" Hvis bus er mindre end 3 minutter forsinket");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.Write("■");
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine(" Hvis bus er mere end 6 minutter forsinket\n");
+
                 Console.ForegroundColor = ConsoleColor.Cyan;
                 Console.WriteLine(infoHeader);
                 Console.ResetColor();
@@ -281,13 +318,15 @@ namespace NT_Projekt.ViewModel
             TimeSpan delay = trip.Duration - route.EstimatedDuration;
             double energyVariation = trip.EnergyUsage - route.EstimatedEnergyUsage;
 
-            Console.ForegroundColor = ConsoleColor.White;
-            
             if (delay.TotalMinutes < 0)
             {
                 Console.ForegroundColor = ConsoleColor.Green;
             }
-            else if (delay.TotalMinutes > 3)
+            else if (delay.TotalMinutes <= 3)
+            {
+                Console.ForegroundColor = ConsoleColor.White;
+            }
+            else if (delay.TotalMinutes <= 6)
             {
                 Console.ForegroundColor = ConsoleColor.Yellow;
             }
