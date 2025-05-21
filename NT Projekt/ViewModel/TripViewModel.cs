@@ -303,7 +303,7 @@ namespace NT_Projekt.ViewModel
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.Write("■");
                 Console.ForegroundColor = ConsoleColor.White;
-                Console.WriteLine(" Hvis bus er mindre end 3 minutter forsinket");
+                Console.WriteLine(" Hvis bus er mellem 3 og 6 minutter forsinket");
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.Write("■");
                 Console.ForegroundColor = ConsoleColor.White;
