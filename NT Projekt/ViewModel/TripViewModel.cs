@@ -45,7 +45,7 @@ namespace NT_Projekt.ViewModel
             }
             catch (Exception ex)
             {
-                Console.WriteLine("\nFejl i indtastning af data");
+                Console.WriteLine($"\nFejl i indtastning af data: {ex.Message}");
             }
            
 
