@@ -38,11 +38,11 @@ namespace NT_Projekt.ViewModel
 
                 Console.Clear();
                 string comment;
-                Console.WriteLine("Har du en kommentar? (1. Ja | 2. Nej");
+                Console.Write("Har du en kommentar? (1. Ja | 2. Nej): ");
                 ConsoleKeyInfo commentChoice = Console.ReadKey();
-                if (commentChoice.KeyChar == 1)
+                if (commentChoice.KeyChar == '1')
                 {
-                    Console.Write("Skriv din kommentar: ");
+                    Console.Write("\nSkriv din kommentar: ");
                     comment = Console.ReadLine();
                 }
                 else
