@@ -47,7 +47,7 @@ namespace NT_Projekt.ViewModel
                 }
                 else
                 {
-                    Console.WriteLine("Ingen kommentar givet\n");
+                    Console.WriteLine("\nIngen kommentar givet\n");
                     comment = " ";
                 }
 
