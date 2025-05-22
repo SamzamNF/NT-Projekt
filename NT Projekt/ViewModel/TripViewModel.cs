@@ -33,10 +33,26 @@ namespace NT_Projekt.ViewModel
 
                 Console.Clear();
                 UserViewModel.UserList(repoManager);
-                Console.WriteLine("\nIndtast bruger-ID: ");
+                Console.Write("\nIndtast bruger-ID: ");
                 string userID = Console.ReadLine();
 
-                Trip newTrip = new Trip(dateTime, energyUsage, duration, routeID, licensePlate, userID, null);
+                Console.Clear();
+                string comment;
+                Console.WriteLine("Har du en kommentar? (1. Ja | 2. Nej");
+                ConsoleKeyInfo commentChoice = Console.ReadKey();
+                if (commentChoice.KeyChar == 1)
+                {
+                    Console.Write("Skriv din kommentar: ");
+                    comment = Console.ReadLine();
+                }
+                else
+                {
+                    Console.WriteLine("Ingen kommentar givet\n");
+                    comment = "";
+                }
+
+
+                Trip newTrip = new Trip(dateTime, energyUsage, duration, routeID, licensePlate, userID, null, comment);
 
                 repoManager.TripRepository.AddTrip(newTrip);
 

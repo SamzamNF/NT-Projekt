@@ -15,6 +15,7 @@ namespace NT_Projekt.Model
         private string _licensePlate;
         private string _userID;
         private string _tripID;
+        private string _comment;
 
         //public properties der giver adgang til private felter og gør dem læsbare og skrivbar
         public DateTime DateTime { get { return _dateTime; } set { _dateTime = value; } }
@@ -24,10 +25,11 @@ namespace NT_Projekt.Model
         public string LicensePlate { get { return _licensePlate; } set { _licensePlate = value; } }
         public string UserID { get { return _userID; } set { _userID = value; } }
         public string TripID { get { return _tripID; } }
+        public string Comment { get { return _comment; } set { _comment = value; } }
 
 
         //Constructor der initialisere en Trip instans med givne parameter
-        public Trip(DateTime date, double energyUsage, TimeSpan duration, string routeID, string licensePlate, string userID, string? tripID)
+        public Trip(DateTime date, double energyUsage, TimeSpan duration, string routeID, string licensePlate, string userID, string? tripID, string comment)
         {
             this._dateTime = date;
             this._energyUsage = energyUsage;
@@ -43,6 +45,7 @@ namespace NT_Projekt.Model
             {
                 this._tripID = Guid.NewGuid().ToString();
             }
+            this._comment = comment;
         }
 
         //ToString() formatere objektets data til en string seperaret med semikolon til lagring
@@ -55,7 +58,8 @@ namespace NT_Projekt.Model
                 RouteID,
                 LicensePlate,
                 UserID,
-                TripID
+                TripID,
+                Comment
             );
         }
         //FromString() rekonstruerer et Trip objekt fra en string genereret af ToString()
@@ -69,8 +73,9 @@ namespace NT_Projekt.Model
             string licensePlate = parts[4];
             string userID = parts[5];
             string tripID = parts[6];
+            string comment = parts[7];
 
-            return new Trip(date, energyUsage, duration, routeID, licensePlate, userID, tripID);
+            return new Trip(date, energyUsage, duration, routeID, licensePlate, userID, tripID, comment);
         }
     }
 }
