@@ -12,16 +12,17 @@ namespace NT_Projekt_Test
         {
             // Arrange
             DateTime expectedDate = new DateTime(2024, 5, 1, 8, 30, 0);
-            double expectedEnergy = 34.5;
+            double expectedEnergy = 34;
             TimeSpan expectedDuration = TimeSpan.FromMinutes(90);
             string expectedRouteID = "R300";
             string expectedLicensePlate = "XY12345";
             string expectedUserID = "U789";
             string expectedTripID = "T900";
+            string expectedComment = "This is a comment";
 
             // Act
             Trip trip = new Trip(expectedDate, expectedEnergy, expectedDuration,
-                                 expectedRouteID, expectedLicensePlate, expectedUserID, expectedTripID);
+                                 expectedRouteID, expectedLicensePlate, expectedUserID, expectedTripID, expectedComment);
 
             // Assert
             Assert.AreEqual(expectedDate, trip.DateTime);
@@ -39,15 +40,14 @@ namespace NT_Projekt_Test
             // Arrange
             Trip trip = new Trip(
                 new DateTime(2024, 5, 1, 8, 30, 0),
-                34.5,
+                34,
                 TimeSpan.FromMinutes(90),
                 "R300",
                 "XY12345",
                 "U789",
-                "T900"
-            );
-
-            // Brug af InvariantCulture til at formatere forventet værdi korrekt
+                "T900",
+                "This is a comment"
+                );
             string expected = string.Join(";",
                 trip.DateTime.ToString(),
                 trip.EnergyUsage.ToString(),
@@ -55,9 +55,9 @@ namespace NT_Projekt_Test
                 trip.RouteID,
                 trip.LicensePlate,
                 trip.UserID,
-                trip.TripID
+                trip.TripID,
+                trip.Comment
             );
-
             // Act
             string result = trip.ToString();
 
@@ -69,19 +69,20 @@ namespace NT_Projekt_Test
         public void FromString_ParsesCorrectly()
         {
             // Arrange
-            string line = "01-05-2024 08:30:00;34.5;01:30:00;R300;XY12345;U789;T900";
+            string line = "01-05-2024 08:30:00;34;01:30:00;R300;XY12345;U789;T900;This is a comment";
 
             // Act
             Trip trip = Trip.FromString(line);
 
             // Assert
-            Assert.AreEqual(new DateTime(2024, 5, 1, 8, 30, 0), trip.DateTime);       // Tjek dato
-            Assert.AreEqual(34.5, trip.EnergyUsage);                                  // Tjek energiforbrug
-            Assert.AreEqual(TimeSpan.FromMinutes(90), trip.Duration);                 // Tjek varighed
-            Assert.AreEqual("R300", trip.RouteID);                                    // Tjek rute
-            Assert.AreEqual("XY12345", trip.LicensePlate);                            // Tjek nummerplade
-            Assert.AreEqual("U789", trip.UserID);                                     // Tjek bruger-ID
-            Assert.AreEqual("T900", trip.TripID);                                     // Tjek TripID
+            Assert.AreEqual(new DateTime(2024, 5, 1, 8, 30, 0), trip.DateTime); // Tjek dato
+            Assert.AreEqual(34, trip.EnergyUsage);                              // Tjek energiforbrug
+            Assert.AreEqual(TimeSpan.FromMinutes(90), trip.Duration);           // Tjek varighed
+            Assert.AreEqual("R300", trip.RouteID);                              // Tjek rute
+            Assert.AreEqual("XY12345", trip.LicensePlate);                      // Tjek nummerplade
+            Assert.AreEqual("U789", trip.UserID);                               // Tjek bruger-ID
+            Assert.AreEqual("T900", trip.TripID);                               // Tjek TripID
+            Assert.AreEqual("This is a comment", trip.Comment);                 // Tjek kommentar
         }
 
         [TestMethod]
@@ -90,12 +91,13 @@ namespace NT_Projekt_Test
             // Arrange
             Trip original = new Trip(
                 new DateTime(2024, 5, 1, 8, 30, 0),
-                34.5,
+                34,
                 TimeSpan.FromMinutes(90),
                 "R300",
                 "XY12345",
                 "U789",
-                "T900"
+                "T900",
+                "This is a comment"
             );
 
             // Act

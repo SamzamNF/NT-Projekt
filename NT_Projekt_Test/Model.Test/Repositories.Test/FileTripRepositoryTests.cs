@@ -39,7 +39,8 @@ namespace NT_Projekt_Test
                 "R300",
                 "XY12345",
                 "U789",
-                "T900"
+                "T900",
+                "This is a comment"
             );
 
             // Act
@@ -52,6 +53,7 @@ namespace NT_Projekt_Test
             Assert.AreEqual("XY12345", result[0].LicensePlate); // Tjek Trip ID
             Assert.AreEqual("R300", result[0].RouteID); // Tjek nummerplade
             Assert.AreEqual("U789", result[0].UserID); // Tjek rute
+            Assert.AreEqual("This is a comment", result[0].Comment); // Tjek kommentar
         }
 
         [TestMethod]
