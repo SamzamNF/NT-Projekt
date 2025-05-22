@@ -48,7 +48,7 @@ namespace NT_Projekt.ViewModel
                 else
                 {
                     Console.WriteLine("Ingen kommentar givet\n");
-                    comment = "";
+                    comment = " ";
                 }
 
 
@@ -306,9 +306,9 @@ namespace NT_Projekt.ViewModel
 
         public void PrintTripDetails(Trip trip, Route route, bool first = false)
         {
-            string infoHeader = string.Format("{0,-13} {1,-10} {2,-22} {3,-10} {4,-10} {5,-10} {6,-10} {7,-15} {8,-10}",
-                "Nummerplade", "Bruger", "Dato & Tid", "Varighed", "Estimat", "Forsink.", "Energi", "Est. Energi" ,"Energiafv.");
-            string line = new string('-', 115);
+            string infoHeader = string.Format("{0,-13} {1,-10} {2,-22} {3,-10} {4,-10} {5,-10} {6,-10} {7,-15} {8,-15} {9,-15}",
+                "Nummerplade", "Bruger", "Dato & Tid", "Varighed", "Estimat", "Forsink.", "Energi", "Est. Energi" ,"Energiafv.", "Kommentar");
+            string line = new string('-', 135);
 
             if (first)
             {
@@ -351,7 +351,7 @@ namespace NT_Projekt.ViewModel
                 Console.ForegroundColor = ConsoleColor.Red;
             }
 
-            string tripDetails = string.Format("{0,-13} {1,-10} {2,-22} {3,-10} {4,-10} {5,-10} {6,-10:F2} {7,-15:F2} {8,-10:F2}",
+            string tripDetails = string.Format("{0,-13} {1,-10} {2,-22} {3,-10} {4,-10} {5,-10} {6,-10:F2} {7,-15:F2} {8,-15:F2} {9,-15}",
                 trip.LicensePlate,
                 trip.UserID,
                 trip.DateTime.ToString("dd-MM-yyyy HH:mm"),
@@ -360,7 +360,8 @@ namespace NT_Projekt.ViewModel
                 delay.ToString(@"hh\:mm\:ss"),
                 trip.EnergyUsage,
                 route.EstimatedEnergyUsage,
-                energyVariation);
+                energyVariation,
+                trip.Comment);
 
             Console.WriteLine(tripDetails);
 

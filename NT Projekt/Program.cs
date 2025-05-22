@@ -13,6 +13,9 @@ namespace NT_Projekt {
              * Dette tillader dataadgang fra et centralt objekt
              * Der anvendes Dependency Injection da RepositoryManager modtager sine afhængigheder(parameter) gennem sin constructor
              */
+            Console.SetWindowSize(150, 50);
+            Console.SetBufferSize(150, 50);
+
             string projectRoot = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName;
             string dataPath = Path.Combine(projectRoot, "Data");
 
