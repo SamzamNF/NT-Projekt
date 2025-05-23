@@ -12,6 +12,7 @@ namespace NT_Projekt.ViewModel
 
             try
             {
+                Console.Clear();
                 Console.Write("Indtast dato og tid (fx 13-05-2025 14:30): ");
                 DateTime dateTime = Convert.ToDateTime(Console.ReadLine());
 
