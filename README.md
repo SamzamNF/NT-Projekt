@@ -79,11 +79,11 @@ NT ønsker et system, der kan:
 Projektet er udviklet som en del af en studieopgave for NT, Nordjyllands Trafikselskab, med fokus på at demonstrere mulighederne for digital logging og analyse af busture.
 Gruppen består af:
 
-**Thomas Løwe Hansen
-**Nicolai Mathias Friis
-**Secil Büyükuslu
-**Patrick Kokholm
-**Freja Broberg Fält
-**Erik Schantz Klausen
+- Thomas Løwe Hansen
+- Nicolai Mathias Friis
+- Secil Büyükuslu
+- Patrick Kokholm
+- Freja Broberg Fält
+- Erik Schantz Klausen
 
 ---
