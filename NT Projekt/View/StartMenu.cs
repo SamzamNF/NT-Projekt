@@ -14,7 +14,7 @@ namespace NT_Projekt.View {
          */
         public static void StartingMenu(RepositoryManager repoManager) {
             string prompt = "Nordjyllands Trafikselskab";
-            string[] options = { "Adminstrer tur", "Vis Ture", "Datahåndtering", "Afslut Program" };
+            string[] options = { "Administrer ture", "Vis Ture", "Datahåndtering", "Afslut Program" };
             Menu startMenu = new Menu(prompt, options);
             int selectedIndex = startMenu.Run();
 
