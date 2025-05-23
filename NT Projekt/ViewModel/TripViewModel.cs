@@ -72,10 +72,29 @@ namespace NT_Projekt.ViewModel
 
         public void DeleteTrip(RepositoryManager repoManager)
         {
-            Console.WriteLine("Indtast TripID for den tur du vil slette: ");
+            Console.Clear();
+            Console.WriteLine("Vælg registrerede tur at slette:\nVælg den 2. sidste del af dataen for for at få ID: ");
+
+            var trips = repoManager.TripRepository.GetAllTrips();
+            
+            foreach (var trip in trips)
+            {
+                Console.WriteLine(trip);
+            }
+
+            Console.Write("\nIndtast TripID for den tur du vil slette: ");
             string tripID = Console.ReadLine();
 
             repoManager.TripRepository.DeleteTrip(tripID);
+
+            if (tripID != null)
+            {
+                Console.WriteLine("Tur slettet fra databasen");
+            }
+            else
+            {
+                Console.WriteLine("Tur ikke fundet i databasen");
+            }
 
             Console.Write("Tryk en tast for at vende tilbage til menuen...");
             Console.ReadKey();
